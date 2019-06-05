@@ -1,3 +1,8 @@
 README.md
 LICENSE
 Dockerfile
+azure_elastic_sql_exporter
+azure_elastic_sql_exporter.exe
+bin/
+config/
+config.yaml
