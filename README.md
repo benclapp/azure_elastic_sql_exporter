@@ -1,8 +1,8 @@
 # Azure SQL Exporter
 
+[Prometheus](https://prometheus.io/) exporter for Azure Elastic Pool SQL metrics.
 
-
-[Prometheus](https://prometheus.io/) exporter for Azure SQL metrics.
+Forked from the [azure_sql_exporter](https://github.com/iamseth/azure_sql_exporter/).
 
 Databases are only queries when fetching /metrics from the exporter so that you may control the interval from your scrape_config section in Prometheus. Recommended to be no more frequent than `15s`, this is the frequency that the data is updated at.
 
