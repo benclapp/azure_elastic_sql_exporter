@@ -1,4 +1,4 @@
-# Azure SQL Exporter
+# Azure Elastic SQL Exporter
 
 [Prometheus](https://prometheus.io/) exporter for Azure Elastic Pool SQL metrics.
 
