@@ -18,7 +18,7 @@ Usage of azure_elastic_sql_exporter:
   -config.file string
     	Specify the config file with the database credentials. (default "./config.yaml")
   -web.listen-address string
-    	Address to listen on for web interface and telemetry. (default ":9139")
+    	Address to listen on for web interface and telemetry. (default ":9596")
   -web.telemetry-path string
     	Path under which to expose metrics. (default "/metrics")
 ```
@@ -52,5 +52,5 @@ Pre-compiled versions may be found in the [release section](https://github.com/b
 Images are available on [Docker Hub](https://hub.docker.com/r/benclapp/azure_elastic_sql_exporter/). Example:
 
 ```bash
-docker run -d -p 9139:9139 -v ./config.yaml:/config/config.yaml benclapp/azure_elastic_sql_exporter:latest -config.file /config/config.yaml
+docker run -d -p 9596:9596 -v ./config.yaml:/config/config.yaml benclapp/azure_elastic_sql_exporter:latest -config.file /config/config.yaml
 ```
