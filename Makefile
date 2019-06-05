@@ -33,3 +33,7 @@ build-all: deps
 
 docker:
 		docker build --pull -t benclapp/azure_elastic_sql_exporter:$(VERSION) -t benclapp/azure_elastic_sql_exporter:latest .
+
+docker-push:
+		docker push benclapp/azure_elastic_sql_exporter:$(VERSION)
+		docker push benclapp/azure_elastic_sql_exporter:latest
