@@ -1,29 +1,35 @@
-VERSION := 0.1.1
+# Go parameters
+VERSION=$(shell cat VERSION)
+VERSION_MINOR=$(shell cat VERSION_MINOR)
+GOCMD=go
+GOBUILD=$(GOCMD) build
+GOFLAGS=-ldflags "-X main.version=$(VERSION)"
+GORUN=$(GOCMD) run
+GOCLEAN=$(GOCMD) clean
+GOGET=$(GOCMD) get
 
-LDFLAGS := -X main.Version=$(VERSION)
-GOFLAGS := -ldflags "$(LDFLAGS)"
-GOOS ?= $(shell uname | tr A-Z a-z)
-GOARCH ?= $(subst x86_64,amd64,$(patsubst i%86,386,$(shell uname -m)))
-SUFFIX ?= $(GOOS)-$(GOARCH)
-ARCHIVE ?= $(BINARY)-$(VERSION).$(SUFFIX).tar.gz
-BINARY := azure_elastic_sql_exporter-$(VERSION).$(SUFFIX)
-
-./dist/$(BINARY):
-	mkdir -p ./dist
-	go build $(GOFLAGS) -o $@
-
-.PHONY: test
-test:
-	go test -v -race $$(go list ./... | grep -v /vendor/)
-
-.PHONY: clean
+all: build-all docker
+build: deps
+		$(GOBUILD) $(GOFLAGS) -v azure_elastic_sql_exporter.go
 clean:
-	rm -rf ./dist
+		$(GOCLEAN)
+		rm -rf bin
+		rm -rf azure_elastic_sql_exporter-*
+run:
+		$(GORUN) $(GOFLAGS) ./...
+deps:
+		$(GOGET) -d -v ./...
+build-all: deps
+		mkdir -p bin
+		for OS in linux darwin windows ; do \
+			env GOOS=$$OS GOARCH=amd64 $(GOBUILD) $(GOFLAGS) azure_elastic_sql_exporter.go; \
+			mkdir azure_elastic_sql_exporter-$(VERSION)-$$OS-amd64 ; \
+			if [ -f azure_elastic_sql_exporter ] ; then mv azure_elastic_sql_exporter azure_elastic_sql_exporter-$(VERSION)-$$OS-amd64 ; fi ; \
+			if [ -f azure_elastic_sql_exporter.exe ] ; then mv azure_elastic_sql_exporter.exe azure_elastic_sql_exporter-$(VERSION)-$$OS-amd64 ; fi ; \
+			tar -czf azure_elastic_sql_exporter-$(VERSION)-$$OS-amd64.tar.gz azure_elastic_sql_exporter-$(VERSION)-$$OS-amd64 ; \
+			mv azure_elastic_sql_exporter-$(VERSION)-$$OS-amd64.tar.gz bin/ ; \
+			rm -rf azure_elastic_sql_exporter-$(VERSION)-$$OS-amd64 ; \
+		done
 
-.PHONY: format
-format:
-	find . -name "*.go" |grep -v vendor | xargs goimports -w
-
-.PHONY: docker
 docker:
-	docker build -t benclapp/azure_elastic_sql_exporter:$(VERSION) -t benclapp/azure_elastic_sql_exporter:latest .
+		docker build --pull -t benclapp/azure_elastic_sql_exporter:$(VERSION) -t benclapp/azure_elastic_sql_exporter:latest .

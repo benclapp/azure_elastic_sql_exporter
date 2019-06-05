@@ -1,4 +1,4 @@
 azure_elastic_sql_exporter
-dist/
+bin/
 config/
 config.yaml
