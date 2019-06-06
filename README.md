@@ -44,7 +44,7 @@ databases:
 
 ## Known Issues
 
-- #1 Add support for multiple elastic pools
+- benclapp/azure_elastic_sql_exporter#1 Add support for multiple elastic pools
 
 ## Binary releases
 
