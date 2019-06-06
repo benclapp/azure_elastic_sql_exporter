@@ -42,6 +42,9 @@ databases:
     server: inventorydb.database.windows.net
 ```
 
+## Known Issues
+
+- [#1] Add support for multiple elastic pools
 
 ## Binary releases
 
