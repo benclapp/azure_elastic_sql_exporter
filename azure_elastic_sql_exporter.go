@@ -98,7 +98,7 @@ func (e *Exporter) scrapeDatabase(d Database) {
 	if err != nil {
 		e.mutex.Lock()
 		defer e.mutex.Unlock()
-		logger.Log("Failed to access database %s: %s", d, err)
+		logger.Log("msg", "Failed to access database", "database", d, "error", err)
 		e.dbUp.WithLabelValues(d.Server).Set(0)
 		return
 	}
@@ -109,7 +109,7 @@ func (e *Exporter) scrapeDatabase(d Database) {
 	if err != nil {
 		e.mutex.Lock()
 		defer e.mutex.Unlock()
-		logger.Log("Failed to query database %s: %s", d, err)
+		logger.Log("msg", "Failed to query database", "database", d, "error", err)
 		e.dbUp.WithLabelValues(d.Server, "master").Set(0)
 		return
 	}
@@ -186,7 +186,6 @@ func newGuage(metricsName, docString string) prometheus.Gauge {
 func init() {
 	logger = logg.NewLogfmtLogger(logg.NewSyncWriter(os.Stderr))
 	logger = logg.With(logger, "ts", logg.DefaultTimestampUTC, "caller", logg.DefaultCaller)
-	logger.Log("msg", "Logger initialised")
 }
 
 func main() {
